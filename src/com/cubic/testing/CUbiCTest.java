@@ -1,8 +1,6 @@
 package com.cubic.testing;
 
 import com.cubic.sensingmodule.SensorModule;
-import com.cubic.testing.*;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.app.Activity;
@@ -18,6 +16,12 @@ public class CUbiCTest extends Activity {
 	private TextView xAView;
 	private TextView yAView;
 	private TextView zAView;
+	
+	//GPS and Compass 
+	private TextView txtvHeading;
+	private TextView txtLat; 
+	private TextView txtLong;
+	
 	private SensorModule mModule;
 
 	@Override
@@ -30,18 +34,26 @@ public class CUbiCTest extends Activity {
 		 xAView = (TextView) findViewById(R.id.xAcceleration);
 		 yAView = (TextView) findViewById(R.id.yAcceleration);
 		 zAView = (TextView) findViewById(R.id.zAcceleration);
+		 
+        txtvHeading = (TextView) findViewById(R.id.Direction);
+        txtLat = (TextView) findViewById(R.id.latitude);
+        txtLong = (TextView) findViewById(R.id.longitude);
 
 		 handler.postDelayed(runnable, 1000);	
 	}
 
 	private Runnable runnable = new Runnable() {
-		   @Override
-		   public void run() { 
-			   xAView.setText("X Acceleration: " + mModule.getAccelerationX());
-			   yAView.setText("Y Acceleration: " + mModule.getAccelerationY());
-			   zAView.setText("Z Acceleration: " + mModule.getAccelerationZ());
-		      handler.postDelayed(this, 1000);
-		   }
+		@Override
+		public void run() { 
+			txtvHeading.setText("Heading: " + mModule.getHeading());
+			txtLat.setText("Lat: " + mModule.getLatitude());
+			txtLong.setText("Long: " + mModule.getLongitude());			   
+			 
+			xAView.setText("X Acceleration: " + mModule.getAccelerationX());
+			yAView.setText("Y Acceleration: " + mModule.getAccelerationY());
+			zAView.setText("Z Acceleration: " + mModule.getAccelerationZ());
+		    handler.postDelayed(this, 1000);
+		}
 	};
 	
 	@Override
@@ -50,24 +62,33 @@ public class CUbiCTest extends Activity {
 		//getMenuInflater().inflate(R.menu.cubi_ctest, menu);
 		return true;
 	}
-	
-	  @Override
-	  protected void onResume() {
-	    super.onResume();
-	
-	  }
 	  
-	  public void getAudioFeed(View view){
-		  mModule.getAudioFeed();
-	  }
+	public void getAudioFeed(View view){
+		mModule.getAudioFeed();
+	}
 	
-	  public void takePhoto(View view)
-	  {
-		  mModule.takePicture();
-	  }
-	  
-	  public void recordVideo(View view)
-	  {
-		  mModule.recordVideo();
-	  }
+	public void takePhoto(View view)
+	{
+		mModule.takePicture();
+	}
+		  
+	public void recordVideo(View view)
+	{
+		mModule.recordVideo();
+	}
+			
+	@Override
+	protected void onResume() {
+		super.onResume();
+	}  
+			  
+	@Override
+	protected void onPause() {
+		super.onPause();
+	}
+			
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+	}	  
 }
