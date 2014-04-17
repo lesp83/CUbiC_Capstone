@@ -55,9 +55,9 @@ public class Processor {
 	//This function will be called when the GPS coords change
 	//It will simply loop through the given POIs
 	//and return an array of POIs that are within the threshold
-	public Location[] checkPOIs(Location myLocation)
+	public POI[] checkPOIs(Location myLocation)
 	{
-		Location[] closeLocations = new Location[100];
+		POI[] closeLocations = new POI[100];
 		int closeCount = 0;
 		int index = 0;
 		while(mPOIs[index] != null && index < 100)
@@ -65,7 +65,7 @@ public class Processor {
 			//not sure how accurate "distanceTo" is
 			if(myLocation.distanceTo(mPOIs[index].mLocation) < metersThreshold)
 			{
-				closeLocations[closeCount] = mPOIs[index].mLocation;
+				closeLocations[closeCount].mLocation = mPOIs[index].mLocation;
 				closeCount++;
 			}
 			index++;
