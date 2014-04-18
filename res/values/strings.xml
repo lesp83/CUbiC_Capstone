@@ -5,4 +5,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <!--  For voice input  -->
+    <string name="voice_trigger">Start Tour</string>
+    <!-- <string name="voice_prompt">next action</string> -->
 </resources>
