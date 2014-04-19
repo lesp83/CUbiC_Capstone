@@ -26,6 +26,7 @@ public class SensorModule {
 	public SensorModule(Activity mActivity) { //passes in a context
 		
 		this.mActivity = mActivity;
+		mLocationManager = (LocationManager) mActivity.getSystemService(Context.LOCATION_SERVICE);
 		mSensorManager = (SensorManager) mActivity.getSystemService(Context.SENSOR_SERVICE); 
 		mAccelerometer = new Accelerometer(mSensorManager);
 		mAudioFeed = new AudioFeed();
