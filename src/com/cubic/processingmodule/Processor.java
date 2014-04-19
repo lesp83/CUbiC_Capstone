@@ -2,7 +2,9 @@ package com.cubic.processingmodule;
 
 import java.util.Vector;
 
-import android.location.Location;
+import com.cubic.sensingmodule.SensorModule;
+
+import android.app.Activity;
 
 public class Processor {
 	private Vector<POI> mTooFarPOI = new Vector<POI>(100); //points that are not visible
@@ -11,16 +13,19 @@ public class Processor {
 	private Vector<POI> mMediumPOI = new Vector<POI>(100); //points that are "medium"
 	private Vector<POI> mFarPOI = new Vector<POI>(100); //points that are "far"
 	
+	SensorModule mSensor;
+	
 	//thresholds in meters
 	int mCloseThreshold; //for the largest icon 
 	int mMediumThreshold; //for the mid-sized icon
 	int mFarThreshold; //for the smallest icon
 	
-	public Processor() { 
+	public Processor(Activity activity) { 
 		//set defaults
 		mCloseThreshold = 30;
 		mMediumThreshold = 60;
 		mFarThreshold = 100;
+		mSensor = new SensorModule(activity);
 	}
 	
 	//could be used to view history
@@ -141,7 +146,7 @@ public class Processor {
 	//and place each POI in it's rightful place
 	//returns true if there is a change and false if not
 	//NOTE:  not sure how accurate "distanceTo" is --> need to test
-	public Vector<POI> checkPOIs(Location myLocation)
+	public Vector<POI> checkPOIs()
 	{
 		boolean change = false;
 		Vector<POI> discovered = new Vector<POI>(10);
@@ -149,7 +154,7 @@ public class Processor {
 		//loop through the tooFar vector and move POIs accordingly
 		for (POI thisPOI : mTooFarPOI)
 		{
-			float distanceFromPOI = myLocation.distanceTo(thisPOI.mLocation);
+			float distanceFromPOI = mSensor.getLocation().distanceTo(thisPOI.mLocation);
 			
 			if(distanceFromPOI <= thisPOI.mDiscoveryThreshold)
 			{
@@ -180,7 +185,7 @@ public class Processor {
 		//loop through the Far vector and move POIs accordingly
 		for (POI thisPOI : mFarPOI)
 		{
-			float distanceFromPOI = myLocation.distanceTo(thisPOI.mLocation);
+			float distanceFromPOI = mSensor.getLocation().distanceTo(thisPOI.mLocation);
 			
 			if(distanceFromPOI <= thisPOI.mDiscoveryThreshold)
 			{
@@ -211,7 +216,7 @@ public class Processor {
 		//loop through the Medium vector and move POIs accordingly
 		for (POI thisPOI : mMediumPOI)
 		{
-			float distanceFromPOI = myLocation.distanceTo(thisPOI.mLocation);
+			float distanceFromPOI = mSensor.getLocation().distanceTo(thisPOI.mLocation);
 			
 			if(distanceFromPOI <= thisPOI.mDiscoveryThreshold)
 			{
@@ -243,7 +248,7 @@ public class Processor {
 		//loop through the Close vector and move POIs accordingly
 		for (POI thisPOI : mClosePOI)
 		{
-			float distanceFromPOI = myLocation.distanceTo(thisPOI.mLocation);
+			float distanceFromPOI = mSensor.getLocation().distanceTo(thisPOI.mLocation);
 			
 			if(distanceFromPOI <= thisPOI.mDiscoveryThreshold)
 			{

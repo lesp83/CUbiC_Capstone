@@ -1,7 +1,5 @@
 package com.cubic.sensingmodule;
 
-import com.cubic.processingmodule.POI;
-import com.cubic.processingmodule.Processor;
 import com.cubic.sensingmodule.Orientation;
 
 import android.app.Activity;
@@ -12,27 +10,24 @@ import android.location.LocationManager;
 
 public class SensorModule {
 	//instances of sensors
-	SensorManager mSensorManager;
-	Accelerometer mAccelerometer;
-	AudioFeed mAudioFeed;
-	LocationManager mLocationManager;
-	Orientation mCompass;
-	Position mPosition;
-	
-	Activity mActivity;
-	Location mLocation; //store current location
-	Processor mProcessor; //our processing module!
+	private SensorManager mSensorManager;
+	private Accelerometer mAccelerometer;
+	private AudioFeed mAudioFeed;
+	private LocationManager mLocationManager;
+	private Orientation mCompass;
+	private Position mPosition;
+	private PhotoActivity mPhotoActivity;
+	private Activity mActivity;
 	
 	public SensorModule(Activity mActivity) { //passes in a context
-		
 		this.mActivity = mActivity;
 		mLocationManager = (LocationManager) mActivity.getSystemService(Context.LOCATION_SERVICE);
 		mSensorManager = (SensorManager) mActivity.getSystemService(Context.SENSOR_SERVICE); 
 		mAccelerometer = new Accelerometer(mSensorManager);
 		mAudioFeed = new AudioFeed();
-		mProcessor = new Processor(); //create a processing module so we can process the world
-		mPosition = new Position(mLocationManager, mProcessor);
+		mPosition = new Position(mLocationManager);
 		mCompass = new Orientation(mSensorManager, mPosition);
+		mPhotoActivity = new PhotoActivity();
 	}
 
 	//Accelerations
@@ -60,17 +55,15 @@ public class SensorModule {
 	//photo
 	public void takePicture()
 	{
-		PhotoActivity photo = new PhotoActivity();
 		if(mActivity != null)
-			photo.takePhoto(mActivity);
+			mPhotoActivity.takePhoto(mActivity);
 	}
 	
 	//video
 	public void recordVideo()
 	{
-		PhotoActivity video = new PhotoActivity();
 		if(mActivity != null)
-			video.recordVideo(mActivity);
+			mPhotoActivity.recordVideo(mActivity);
 	}
 	
 	
@@ -88,14 +81,8 @@ public class SensorModule {
 		return mPosition.getLongitude();
 	}
 	
-	//add POIs to our sensing module
-	public void addPOI(POI poi)
+	public Location getLocation()
 	{
-		mProcessor.addPOI(poi);
-	}
-	
-	public void addPOI(POI[] poi)
-	{
-		mProcessor.addPOIs(poi);
+		return mPosition.getLocation();
 	}
 }

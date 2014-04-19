@@ -1,7 +1,5 @@
 package com.cubic.sensingmodule;
 
-import com.cubic.processingmodule.Processor;
-
 import android.location.LocationManager;
 import android.location.LocationListener;
 import android.location.Location;
@@ -14,11 +12,9 @@ public class Position implements LocationListener{
 	private String provider;
 	private Location location;
 	private GeomagneticField geoMagneticField;
-	private Processor mProcessor;
 
-	public Position(LocationManager locManager, Processor processor){
+	public Position(LocationManager locManager){
 		locationmanager = locManager;
-		mProcessor = processor;
 		Criteria criteria = new Criteria();
 		provider = locationmanager.getBestProvider(criteria, true);
 		locationmanager.requestLocationUpdates(provider, 1000, .1f, this);
@@ -31,12 +27,7 @@ public class Position implements LocationListener{
 
 	@Override
 	public void onLocationChanged(Location newLocation){
-		//only call the processing module if the distance traveled is 5 meters
-		if(location.distanceTo(newLocation) >= 5)
-		{
-			location = newLocation;
-			mProcessor.checkPOIs(location);
-		}
+		location = newLocation;
 		updateGeomagneticField();
 	}
 
