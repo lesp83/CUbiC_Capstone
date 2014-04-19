@@ -1,5 +1,6 @@
 package com.cubic.sensingmodule;
 
+import com.cubic.processingmodule.POI;
 import com.cubic.processingmodule.Processor;
 import com.cubic.sensingmodule.Orientation;
 
@@ -29,7 +30,7 @@ public class SensorModule {
 		mAccelerometer = new Accelerometer(mSensorManager);
 		mAudioFeed = new AudioFeed();
 		mProcessor = new Processor(); //create a processing module so we can process the world
-		mPosition = new Position(mLocationManager);
+		mPosition = new Position(mLocationManager, mProcessor);
 		mCompass = new Orientation(mSensorManager, mPosition);
 	}
 
@@ -84,5 +85,16 @@ public class SensorModule {
 	
 	public double getLongitude(){
 		return mPosition.getLongitude();
+	}
+	
+	//add POIs to our sensing module
+	public void addPOI(POI poi)
+	{
+		mProcessor.addPOI(poi);
+	}
+	
+	public void addPOI(POI[] poi)
+	{
+		mProcessor.addPOIs(poi);
 	}
 }
