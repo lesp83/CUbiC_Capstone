@@ -33,24 +33,6 @@ public class SensorModule {
 		mCompass = new Orientation(mSensorManager, mPosition);
 	}
 
-	//add 1 POI
-	public void addPOI(Location POI)
-	{
-		mProcessor.addPOI(POI);
-	}
-	
-	//add array of POIs
-	public void addPOIs(Location[] POIs)
-	{
-		mProcessor.addPOIs(POIs);
-	}	
-	
-	//delete a POI - used if the location should no longer be available
-	public void delPOI(Location POI)
-	{
-		mProcessor.delPOI(POI);
-	}
-	
 	//Accelerations
 	public String getAccelerationX()
 	{
