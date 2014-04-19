@@ -5,11 +5,11 @@ import java.util.Vector;
 import android.location.Location;
 
 public class Processor {
-	private Vector<POI> mTooFarPOI = new Vector<POI>(100);
-	private Vector<POI> mRetiredPOI = new Vector<POI>(100);
-	private Vector<POI> mClosePOI = new Vector<POI>(100);
-	private Vector<POI> mMediumPOI = new Vector<POI>(100);
-	private Vector<POI> mFarPOI = new Vector<POI>(100);
+	private Vector<POI> mTooFarPOI = new Vector<POI>(100); //points that are not visible
+	private Vector<POI> mRetiredPOI = new Vector<POI>(100); //points that have been deleted
+	private Vector<POI> mClosePOI = new Vector<POI>(100); //points that are "close"
+	private Vector<POI> mMediumPOI = new Vector<POI>(100); //points that are "medium"
+	private Vector<POI> mFarPOI = new Vector<POI>(100); //points that are "far"
 	
 	//thresholds in meters
 	int mCloseThreshold; //for the largest icon 
@@ -27,6 +27,26 @@ public class Processor {
 	public Vector<POI> getRetired()
 	{
 		return mRetiredPOI;
+	}
+	
+	public Vector<POI> getTooFar()
+	{
+		return mTooFarPOI;
+	}
+	
+	public Vector<POI> getFar()
+	{
+		return mFarPOI;
+	}
+	
+	public Vector<POI> getMedium()
+	{
+		return mMediumPOI;
+	}
+	
+	public Vector<POI> getClose()
+	{
+		return mClosePOI;
 	}
 	
 	//add 1 POI
@@ -121,9 +141,10 @@ public class Processor {
 	//and place each POI in it's rightful place
 	//returns true if there is a change and false if not
 	//NOTE:  not sure how accurate "distanceTo" is --> need to test
-	public boolean checkPOIs(Location myLocation)
+	public Vector<POI> checkPOIs(Location myLocation)
 	{
 		boolean change = false;
+		Vector<POI> discovered = new Vector<POI>(10);
 		
 		//loop through the tooFar vector and move POIs accordingly
 		for (POI thisPOI : mTooFarPOI)
@@ -133,6 +154,7 @@ public class Processor {
 			if(distanceFromPOI <= thisPOI.mDiscoveryThreshold)
 			{
 				firePOIEvent(thisPOI.mEvent);
+				discovered.add(thisPOI);
 				change = true;
 			}
 			else if(distanceFromPOI <= mCloseThreshold)
@@ -163,6 +185,7 @@ public class Processor {
 			if(distanceFromPOI <= thisPOI.mDiscoveryThreshold)
 			{
 				firePOIEvent(thisPOI.mEvent);
+				discovered.add(thisPOI);
 				change = true;
 			}
 			else if(distanceFromPOI <= mCloseThreshold)
@@ -193,6 +216,7 @@ public class Processor {
 			if(distanceFromPOI <= thisPOI.mDiscoveryThreshold)
 			{
 				firePOIEvent(thisPOI.mEvent);
+				discovered.add(thisPOI);
 				change = true;
 			}
 			else if(distanceFromPOI <= mCloseThreshold)
@@ -224,6 +248,7 @@ public class Processor {
 			if(distanceFromPOI <= thisPOI.mDiscoveryThreshold)
 			{
 				firePOIEvent(thisPOI.mEvent);
+				discovered.add(thisPOI);
 				change = true;
 			}
 			else if(distanceFromPOI > mCloseThreshold)
@@ -254,7 +279,7 @@ public class Processor {
 			//possibly wake up the presentation module somehow
 		}
 		
-		return change;
+		return discovered;
 	}
 	
 	private void firePOIEvent(POIEvent event)
