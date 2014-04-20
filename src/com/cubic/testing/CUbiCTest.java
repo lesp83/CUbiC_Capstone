@@ -1,6 +1,10 @@
 package com.cubic.testing;
 
+import java.util.List;
+
 import com.cubic.sensingmodule.SensorModule;
+
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.app.Activity;
@@ -28,6 +32,7 @@ public class CUbiCTest extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
 		
 		 mModule = new SensorModule(this);
 		
@@ -46,8 +51,10 @@ public class CUbiCTest extends Activity {
 		@Override
 		public void run() { 
 			txtvHeading.setText("Heading: " + mModule.getHeading());
+			
 			txtLat.setText("Lat: " + mModule.getLatitude());
-			txtLong.setText("Long: " + mModule.getLongitude());			   
+			txtLong.setText("Long: " + mModule.getLongitude());	
+			
 			 
 			xAView.setText("X Acceleration: " + mModule.getAccelerationX());
 			yAView.setText("Y Acceleration: " + mModule.getAccelerationY());

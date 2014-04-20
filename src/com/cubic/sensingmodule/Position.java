@@ -1,5 +1,8 @@
 package com.cubic.sensingmodule;
 
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import com.cubic.processingmodule.Processor;
 
 import android.location.LocationManager;
@@ -11,7 +14,7 @@ import android.hardware.GeomagneticField;
 
 public class Position implements LocationListener{
 	private LocationManager locationmanager;
-	private String provider;
+	private List<String> providers;
 	private Location location;
 	private GeomagneticField geoMagneticField;
 	private Processor mProcessor;
@@ -19,10 +22,20 @@ public class Position implements LocationListener{
 	public Position(LocationManager locManager, Processor processor){
 		locationmanager = locManager;
 		mProcessor = processor;
+		Location lastlocation = locationmanager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
+		if (lastlocation != null) {
+            long locationAge = lastlocation.getTime() - System.currentTimeMillis();
+            if (locationAge < TimeUnit.MINUTES.toMillis(30)) {
+                location = lastlocation;
+                updateGeomagneticField();
+            }
+        }
+		
 		Criteria criteria = new Criteria();
-		provider = locationmanager.getBestProvider(criteria, true);
-		locationmanager.requestLocationUpdates(provider, 1000, .1f, this);
-		location = locationmanager.getLastKnownLocation(provider);
+		providers = locationmanager.getProviders(criteria, true);
+		for (String provider : providers) {
+			locationmanager.requestLocationUpdates(provider, 1000, .1f, this);
+		}
 	}
 
 	public Location getLocation(){
@@ -41,11 +54,20 @@ public class Position implements LocationListener{
 	}
 
 	public double getLatitude(){
-		return location.getLatitude();
+		try{
+			return location.getLatitude();
+		}catch(NullPointerException ex){
+			return 0.0;
+		}
+		
 	}
 
 	public double getLongitude(){
-		return location.getLongitude();
+		try{
+			return location.getLongitude();
+		}catch(NullPointerException ex){
+			return 0.0;
+		}
 	}
 
 	public GeomagneticField getGeomagneticField(){
