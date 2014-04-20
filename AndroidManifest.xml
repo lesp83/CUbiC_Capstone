@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cubic.testing"
-    android:versionCode="1"
+    android:versionCode="5"
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="14"
-        android:targetSdkVersion="15" />
+        android:minSdkVersion="19"
+        android:targetSdkVersion="19" />
     
     <uses-permission android:name="android.permission.WRTIE_EXTERNAL_STORAGE"/>
 
@@ -24,10 +24,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="com.google.android.glass.action.VOICE_TRIGGER" />
             
+            </intent-filter>
+            
             <meta-data
                 android:name="com.google.android.glass.VoiceTrigger"
                 android:resource="@xml/voiceinput" />
-            </intent-filter>
         </activity>
     </application>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
