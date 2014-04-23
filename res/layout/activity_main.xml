@@ -56,41 +56,32 @@
         android:text="Y Acceleration: " />
 
     <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/longitude"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:onClick="takePhoto"
+        android:text="Take Picture" />
+
+    <Button
         android:id="@+id/button4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button1"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="14dp"
+        android:layout_alignRight="@+id/button1"
+        android:layout_below="@+id/button1"
+        android:layout_marginTop="18dp"
         android:onClick="getAudioFeed"
-        android:text="Most Annoying Sound in the World" />
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button4"
-        android:layout_alignLeft="@+id/latitude"
-        android:layout_marginBottom="27dp"
-        android:text="Take Picture" />
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button4"
-        android:layout_alignLeft="@+id/latitude"
-        android:layout_marginBottom="96dp"
-        android:onClick="takePhoto"
-        android:text="Take Picture" />
+        android:text="Play Sound" />
 
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button1"
+       
+        android:layout_above="@+id/zAcceleration"
         android:layout_alignLeft="@+id/button1"
-        android:layout_marginBottom="29dp"
         android:onClick="recordVideo"
         android:text="record Video" />
 
