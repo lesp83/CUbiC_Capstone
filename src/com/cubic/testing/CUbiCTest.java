@@ -1,6 +1,12 @@
 package com.cubic.testing;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import com.cubic.sensingmodule.SensorModule;
+import com.cubic.testing.R;
+
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.app.Activity;
@@ -24,6 +30,8 @@ public class CUbiCTest extends Activity {
 	
 	private SensorModule mModule;
 
+    MediaPlayer mp = null;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,22 +47,45 @@ public class CUbiCTest extends Activity {
         txtLat = (TextView) findViewById(R.id.latitude);
         txtLong = (TextView) findViewById(R.id.longitude);
 
-		 handler.postDelayed(runnable, 1000);	
+        mp = MediaPlayer.create(CUbiCTest.this,R.raw.whish);
+        
+        Timer mTimer = new Timer();
+        mTimer.schedule(new TimerTask()
+        {
+        	public void run() {
+        		timerMethod();
+        	}
+        }, 0, 1000);
+        
+        
 	}
 
+	private void timerMethod()
+	{
+		this.runOnUiThread(runnable);
+	}
+	
 	private Runnable runnable = new Runnable() {
 		@Override
-		public void run() { 
+		public void run() {
 			txtvHeading.setText("Heading: " + mModule.getHeading());
+			float mV = Float.valueOf(mModule.getHeading());
+			if(mV > 0 && mV < 10 || mV < 360 && mV > 350)
+				mp.start();
+			try{
 			txtLat.setText("Lat: " + mModule.getLatitude());
 			txtLong.setText("Long: " + mModule.getLongitude());			   
-			 
+			}
+			catch(Exception e)
+			{
+			}
 			xAView.setText("X Acceleration: " + mModule.getAccelerationX());
 			yAView.setText("Y Acceleration: " + mModule.getAccelerationY());
 			zAView.setText("Z Acceleration: " + mModule.getAccelerationZ());
-		    handler.postDelayed(this, 1000);
 		}
 	};
+	
+	
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
